@@ -3,7 +3,7 @@
 import {
   EQUIPOS, FACTOR_EMISION, TOTAL_FUENTE_KG, VEHICULOS_EQUIVALENTES, CATEGORIAS, MATERIALES, ESCALA, ASPECTOS,
   RAEE_CHECKLIST, RAEE_VEREDICTO, OBJETIVOS, META_REDUCCION_CO2, AHORRO_APAGADO, ACCIONES, KPIS, ODS, PHVA,
-  OBSOLESCENCIA_FUENTE,
+  OBSOLESCENCIA_FUENTE, BENEFICIO_CONSOLIDADO,
 } from './datos.js';
 import {
   huellaTotal, distribucionPorCategoria, significancia, nivelSignificancia, porcentajeObsoleto,
@@ -344,9 +344,31 @@ function iniciarKpi() {
     `<strong>Obsolescencia:</strong> la fuente reporta 63 %, pero su propia tabla da ${obs} de ${total} unidades (${fmt((obs / total) * 100)} %) o 6 de 10 tipos (60 %). Además marca como obsoletos los routers con exactamente 4 años, aunque el criterio es «más de 4». Se muestra el 63 % como dato reportado.`,
     '<strong>Enfriamiento en la matriz:</strong> Media (2) × Grave (3) = 6 es MEDIO según la escala de la fuente, pero aparece como «ALTO 6 — CRÍTICO». El mapa usa la escala. La misma fila habla de destrucción de la capa de ozono, mientras el glosario aclara que los HFC no la dañan (su problema es el alto GWP).',
     `<strong>Redondeo:</strong> las workstations figuran con ${fmt(42008)} kWh/año; la fórmula da ${fmt(kwhAnual(ws))} (0,085 kW × 9 h × 365 × 150). Por eso el total recalculado es ${fmt(totalCo2)} kg frente a ${fmt(TOTAL_FUENTE_KG)} kg (diferencia < 0,01 %).`,
+    `<strong>Equivalencia en carros:</strong> §1.3.3 dice que 490 014 kg ≈ 106 carros (≈ ${fmt(TOTAL_FUENTE_KG / VEHICULOS_EQUIVALENTES)} kg por carro al año) y §5 que ${fmt(BENEFICIO_CONSOLIDADO.kg)} kg ≈ ${BENEFICIO_CONSOLIDADO.vehiculos} carros (≈ ${fmt(BENEFICIO_CONSOLIDADO.kg / BENEFICIO_CONSOLIDADO.vehiculos)} kg). La diferencia es de ~1 %; la calculadora usa la proporción de §1.3.3, que es la de la línea base.`,
     '<strong>Inversiones:</strong> los montos en USD de la tabla de costos vienen anonimizados en la versión pública del caso; el simulador muestra reducción de CO₂ y payback, pero no inventa la inversión total.',
   ];
   $('#lista-erratas').innerHTML = erratas.map((e) => `<li>${e}</li>`).join('');
+}
+
+/* ---------- 0. Método: gráfica SVG de CO₂ por equipo ---------- */
+function iniciarGraficaMetodo() {
+  const svg = $('#grafica-co2');
+  if (!svg) return;
+  const filas = [...EQUIPOS].sort((a, b) => b.co2Fuente - a.co2Fuente);
+  const max = filas[0].co2Fuente;
+  const ancho = 360, izq = 104, barraMax = 180, alto = 26;
+  const h = filas.length * alto + 8;
+  svg.setAttribute('viewBox', `0 0 ${ancho} ${h}`);
+  svg.innerHTML = filas.map((e, i) => {
+    const y = 4 + i * alto;
+    const w = Math.max(2, (e.co2Fuente / max) * barraMax);
+    const clase = e.categoria === 'enfriamiento' ? 'g-rojo' : e.categoria === 'usuario' ? 'g-cian' : 'g-tinta';
+    return `<text x="${izq - 6}" y="${y + 15}" class="g-etiqueta" text-anchor="end">${e.corto}</text>
+      <rect x="${izq}" y="${y + 3}" width="${w.toFixed(1)}" height="${alto - 8}" class="${clase}"/>
+      <text x="${(izq + w + 4).toFixed(1)}" y="${y + 15}" class="g-valor">${fmt(e.co2Fuente)}</text>`;
+  }).join('');
+  const kg = $('#kg-vehiculo');
+  if (kg) kg.textContent = fmt(TOTAL_FUENTE_KG / VEHICULOS_EQUIVALENTES);
 }
 
 /* ---------- Entrada de viñetas al hacer scroll ---------- */
@@ -360,6 +382,7 @@ function iniciarApariciones() {
 
 iniciarMenu();
 iniciarSplash();
+iniciarGraficaMetodo();
 iniciarPhva();
 iniciarCalculadora();
 iniciarMatriz();

@@ -3,297 +3,122 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Huella TIC — ISO 14001 en un data center</title>
-  <meta name="description" content="Landing interactiva: diagnóstico ambiental ISO 14001:2015 de la infraestructura TIC de un proveedor regional de servicios gestionados y data centers (caso de estudio académico).">
+  <title>¿Cuánto CO₂ emite tu tecnología? — Huella TIC</title>
+  <meta name="description" content="Calculadora de huella de carbono de equipos de TI con el factor de la red eléctrica de Colombia (IDEAM, 0,196 kg CO₂/kWh). Elige equipos, cantidad y horas al día.">
   <meta name="author" content="Mario Alejandro Puerta Alarcón">
-  <meta name="theme-color" content="#F9F9F7">
-  <meta property="og:title" content="Huella TIC — ISO 14001 en un data center">
-  <meta property="og:description" content="≈ 490 t de CO₂ al año: calculadora de huella, matriz de aspectos e impactos, RAEE y simulador de escenarios.">
+  <meta name="theme-color" content="#F9F9F7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141C33" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="¿Cuánto CO₂ emite tu tecnología?">
+  <meta property="og:description" content="Servidores, PC, laptops, routers, UPS: kg de CO₂ al año en vivo, con el factor IDEAM 0,196.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Dela+Gothic+One&family=Inter:wght@400;600;800&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&text=%E7%92%B0%E5%A2%83&display=swap">
-  <link rel="stylesheet" href="css/estilos.css">
-  <script type="module" src="js/app.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Dela+Gothic+One&family=IBM+Plex+Mono:wght@500;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&text=%E7%82%AD&display=swap">
+  <link rel="stylesheet" href="css/herramienta.css">
+  <script type="module" src="js/herramienta.js"></script>
 </head>
 <body>
-  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <a class="saltar" href="#equipos">Saltar a la calculadora</a>
 
-  <header class="cabecera">
-    <a class="marca" href="#inicio" aria-label="Huella TIC, ir al inicio">
-      <span class="marca-kanji" aria-hidden="true">環</span>
+  <header class="barra">
+    <a class="marca" href="./" aria-label="Huella TIC, inicio">
+      <span class="marca-kanji" aria-hidden="true" lang="ja">炭</span>
       <span>Huella TIC</span>
     </a>
-    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu">Capítulos</button>
-    <nav id="menu" class="menu" aria-label="Capítulos">
-      <ol>
-        <li><a href="#phva">01 PHVA</a></li>
-        <li><a href="#calculadora">02 Huella</a></li>
-        <li><a href="#matriz">03 Matriz</a></li>
-        <li><a href="#inventario">04 Inventario</a></li>
-        <li><a href="#raee">05 RAEE</a></li>
-        <li><a href="#escenarios">06 Escenarios</a></li>
-        <li><a href="#kpi">07 KPI</a></li>
-        <li><a href="#creditos">08 Créditos</a></li>
-      </ol>
-    </nav>
+    <a class="barra-enlace" href="proceso/">Cómo se hizo <span aria-hidden="true">→</span></a>
   </header>
 
-  <main id="contenido">
-    <!-- 1. SPLASH -->
-    <section id="inicio" class="splash" aria-labelledby="titulo-splash">
-      <div class="splash-lineas" aria-hidden="true"></div>
-      <div class="splash-trama" aria-hidden="true"></div>
-      <p class="splash-kanji" aria-hidden="true" lang="ja">環境</p>
-      <div class="splash-contenido">
-        <p class="cartela">Caso de estudio · ISO 14001:2015 · 2026</p>
-        <h1 id="titulo-splash" class="splash-titulo">
-          <span class="splash-cifra"><span data-contador="490" data-final="490">490</span><span class="splash-unidad">t CO₂</span></span>
-          <span class="splash-sub">al año. Solo por mantener encendidos 6 data centers.</span>
-        </h1>
-        <p class="globo">
-          Equivale a unos <strong>106 carros a gasolina</strong> andando sin parar durante un año.
-          Y el <strong>42 %</strong> lo pone el aire acondicionado.
-        </p>
-        <p class="splash-texto">
-          <strong>Huella TIC</strong> convierte un diagnóstico ambiental hecho en la universidad
-          sobre <em>un proveedor regional de servicios gestionados y data centers</em> en una herramienta que se puede tocar:
-          calcula, prioriza y simula cómo bajar esa cifra con ISO 14001.
-        </p>
-        <a class="boton boton-tinta" href="#phva">Pasar la página</a>
+  <main class="escenario">
+    <p class="kanji-fondo" aria-hidden="true" lang="ja">炭</p>
+
+    <div class="titulo-bloque">
+      <p class="cartela">Calculadora · factor IDEAM 0,196 kg CO₂/kWh</p>
+      <h1>¿Cuánto CO₂ emite tu tecnología?</h1>
+    </div>
+
+    <!-- HUD: resultado en vivo -->
+    <section class="hud" id="hud" aria-labelledby="hud-titulo">
+      <h2 id="hud-titulo" class="sr-only">Resultado</h2>
+      <div class="hud-cabeza">
+        <p class="hud-nivel"><span class="hud-nv">NV <b id="nivel-n">3</b></span> <span id="nivel-nombre">Hoguera</span></p>
+        <p class="hud-ono" id="hud-ono" aria-hidden="true"></p>
       </div>
-      <p class="onomato onomato-splash" aria-hidden="true">¡BZZZT!</p>
+
+      <svg class="medidor" viewBox="0 0 240 142" role="img" aria-labelledby="medidor-desc">
+        <desc id="medidor-desc">Medidor logarítmico de 10 kg a 1 000 000 kg de CO₂ al año.</desc>
+        <defs>
+          <pattern id="trama-hud" width="6" height="6" patternUnits="userSpaceOnUse">
+            <circle cx="1.5" cy="1.5" r="1" class="trama-punto"/>
+            <circle cx="4.5" cy="4.5" r="1" class="trama-punto"/>
+          </pattern>
+        </defs>
+        <path class="medidor-fondo" d="M20 120 A100 100 0 0 1 220 120" pathLength="100"/>
+        <path class="medidor-trama" d="M20 120 A100 100 0 0 1 220 120" pathLength="100"/>
+        <path class="medidor-valor" id="medidor-valor" d="M20 120 A100 100 0 0 1 220 120" pathLength="100" stroke-dasharray="0 100"/>
+        <g id="medidor-marcas" class="medidor-marcas"></g>
+        <g id="medidor-dc" class="medidor-dc"></g>
+        <g id="aguja" class="aguja">
+          <line x1="120" y1="120" x2="120" y2="36"/>
+          <circle cx="120" cy="120" r="8"/>
+        </g>
+      </svg>
+
+      <p class="hud-cifra" aria-live="polite" aria-atomic="true"><span id="total-co2">0</span> <small>kg CO₂/año</small></p>
+      <p class="hud-kwh"><span id="total-kwh">0</span> kWh/año <span class="hud-x">× 0,196</span></p>
+
+      <div class="xp" aria-hidden="true"><span class="xp-relleno" id="xp-relleno"></span></div>
+      <p class="xp-texto" id="xp-texto">—</p>
+
+      <ul class="equivalencias">
+        <li><b id="eq-vehiculos">0</b><span>carros a gasolina andando un año</span></li>
+        <li><b id="eq-hogares">0</b><span>hogares colombianos (electricidad de un año)</span></li>
+        <li><b id="eq-dc">0 %</b><span>del data center del caso (490 014 kg)</span></li>
+      </ul>
+      <p class="hud-nota">Equivalencias <em>calculadas aquí</em> con las proporciones del caso de estudio: 490 014 kg ≈ 106 carros; 1 aire de precisión de 5 kW ≈ 15 hogares. ¿Árboles o km? La fuente no trae ese dato y no lo inventamos.</p>
+
+      <div class="hud-acciones">
+        <button class="boton boton-rojo" id="compartir" type="button">Compartir resultado</button>
+        <p class="estado" id="estado-compartir" role="status"></p>
+      </div>
+      <textarea class="copia-manual" id="copia-manual" readonly hidden aria-label="Texto del resultado para copiar"></textarea>
     </section>
 
-    <!-- 2. POR QUÉ ISO 14001 + PHVA -->
-    <section id="phva" class="pagina" aria-labelledby="titulo-phva">
-      <header class="pagina-cabecera">
-        <p class="capitulo">Capítulo 01</p>
-        <h2 id="titulo-phva">Por qué ISO 14001</h2>
-      </header>
-      <div class="vinetas vinetas-3">
-        <article class="vineta">
-          <h3>Ya certifica calidad y seguridad</h3>
-          <p>La organización tiene ISO 9001, ISO 27001 e ISO 20000-1, pero <strong>no tiene documentada públicamente ISO 14001</strong>. Ese vacío es el hallazgo central del diagnóstico.</p>
-        </article>
-        <article class="vineta">
-          <h3>Un marco, no un trámite</h3>
-          <p>ISO 14001 pide identificar qué actividades dañan el ambiente, cumplir la ley, fijar objetivos medibles y mejorar cada ciclo. Es voluntaria, pero se reconoce en todo el mundo.</p>
-        </article>
-        <article class="vineta vineta-trama">
-          <h3>El ciclo PHVA</h3>
-          <p><strong>P</strong>lanear, <strong>H</strong>acer, <strong>V</strong>erificar, <strong>A</strong>ctuar: la rueda de mejora continua que ordena la norma. Abre cada viñeta para ver qué hizo el diagnóstico en esa fase.</p>
-        </article>
+    <!-- Equipos -->
+    <section class="equipos" id="equipos" aria-labelledby="equipos-titulo" tabindex="-1">
+      <div class="equipos-cabeza">
+        <h2 id="equipos-titulo">Tus equipos</h2>
+        <p class="sello" id="sello">Ejemplo: pequeña oficina</p>
       </div>
-      <div class="phva">
-        <div class="phva-pestanas" role="tablist" aria-label="Fases del ciclo PHVA"></div>
-        <div class="phva-panel vineta" id="phva-panel" role="tabpanel" tabindex="0"></div>
-      </div>
-    </section>
+      <p class="equipos-ayuda">Potencia y horas por defecto: tabla del caso de estudio. Cámbialas si conoces las de tu equipo.</p>
 
-    <!-- 3. CALCULADORA -->
-    <section id="calculadora" class="pagina" aria-labelledby="titulo-calc">
-      <header class="pagina-cabecera">
-        <p class="capitulo">Capítulo 02</p>
-        <h2 id="titulo-calc">Calculadora de huella</h2>
-        <p class="formula" aria-label="Fórmula: CO2 en kilogramos por año igual a kilovatios por horas al día por 365 por unidades por factor de emisión">
-          CO₂ (kg/año) = kW × h/día × 365 × unidades × <span class="formula-factor">0,196</span>
-        </p>
-        <p class="pie">Factor de emisión de la red eléctrica nacional: IDEAM, 2023. Mueve los controles: todo se recalcula en vivo.</p>
-      </header>
+      <ul class="filas" id="filas"></ul>
+      <p class="vacio" id="vacio" hidden>Sin equipos. Añade uno abajo o carga el ejemplo.</p>
 
-      <div class="vinetas vinetas-calc">
-        <div class="vineta vineta-tabla">
-          <p class="onomato onomato-zumb" aria-hidden="true">¡ZUMB!</p>
-          <div class="calc-controles">
-            <label class="campo-corto">Factor (kg CO₂/kWh)
-              <input id="factor" type="number" min="0" max="2" step="0.001" value="0.196" inputmode="decimal">
-            </label>
-            <button id="restaurar" class="boton" type="button">Restaurar valores de la fuente</button>
-          </div>
-          <div class="tabla-envoltura">
-            <table class="tabla-calc">
-              <caption class="sr-only">Equipos críticos con unidades, horas por día y potencia editables; energía y emisiones calculadas</caption>
-              <thead>
-                <tr><th scope="col">Equipo</th><th scope="col">Unidades</th><th scope="col">Horas/día</th><th scope="col">kW por unidad</th><th scope="col">kWh/año</th><th scope="col">kg CO₂/año</th></tr>
-              </thead>
-              <tbody id="filas-calc"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <aside class="vineta vineta-total" aria-labelledby="titulo-total">
-          <h3 id="titulo-total">Total anual</h3>
-          <p class="total-cifra" aria-live="polite"><span id="total-co2">490 014</span> <small>kg CO₂</small></p>
-          <p class="total-kwh"><span id="total-kwh">—</span> kWh/año</p>
-          <p id="total-diferencia" class="pie"></p>
-          <h3 class="distribucion-titulo">Distribución por categoría</h3>
-          <div id="barra-distribucion" class="barra-distribucion" role="img" aria-label="Distribución de la huella por categoría"></div>
-          <ul id="leyenda-distribucion" class="leyenda"></ul>
-        </aside>
-
-        <aside class="vineta vineta-pue" aria-labelledby="titulo-pue">
-          <h3 id="titulo-pue">PUE estimado: 1,8</h3>
-          <p>El <abbr title="Power Usage Effectiveness">PUE</abbr> divide toda la energía del data center entre la que llega a los equipos TI. Con <strong>1,8</strong>, cerca del <strong>44 %</strong> se va en enfriamiento e infraestructura.</p>
-          <div class="pue-regla" role="img" aria-label="Regla de PUE: óptimo 1,2, meta 1,45, actual 1,8, rango de referencia hasta 2,0">
-            <span class="pue-marca pue-optimo" style="--pos:20%">1,2<br><small>óptimo</small></span>
-            <span class="pue-marca pue-meta" style="--pos:45%">1,45<br><small>meta</small></span>
-            <span class="pue-marca pue-actual" style="--pos:80%">1,8<br><small>hoy</small></span>
-          </div>
-          <p class="pie">Estimación: valor central del rango 1,6–2,0 reportado para data centers Tier III de la región. No es un dato auditado.</p>
-        </aside>
-      </div>
-    </section>
-
-    <!-- 4. MATRIZ -->
-    <section id="matriz" class="pagina" aria-labelledby="titulo-matriz">
-      <header class="pagina-cabecera">
-        <p class="capitulo">Capítulo 03</p>
-        <h2 id="titulo-matriz">Matriz de aspectos e impactos</h2>
-        <p class="pie">Significancia = Probabilidad × Severidad. Elige un aspecto en el mapa de calor para ver causa, efecto y acción requerida.</p>
-      </header>
-      <div class="vinetas vinetas-matriz">
-        <div class="vineta">
-          <div class="mapa" id="mapa-calor" role="group" aria-label="Mapa de calor de probabilidad por severidad"></div>
-          <ul class="semaforo" id="semaforo"></ul>
-        </div>
-        <aside class="vineta vineta-detalle" id="detalle-aspecto" aria-live="polite" tabindex="-1">
-          <p class="pie">Selecciona un aspecto del mapa.</p>
-        </aside>
-      </div>
-    </section>
-
-    <!-- 5. INVENTARIO -->
-    <section id="inventario" class="pagina" aria-labelledby="titulo-inv">
-      <header class="pagina-cabecera">
-        <p class="capitulo">Capítulo 04</p>
-        <h2 id="titulo-inv">Inventario y obsolescencia</h2>
-        <p class="pie">Un equipo se considera obsoleto si supera los 4 años de uso: el ciclo de vida técnico recomendado para infraestructura crítica.</p>
-      </header>
-      <div class="vinetas vinetas-inv">
-        <div class="vineta">
-          <h3>Unidades por tipo de equipo</h3>
-          <ul class="leyenda leyenda-inv">
-            <li><span class="muestra muestra-obsoleto"></span> Obsoleto (fuente)</li>
-            <li><span class="muestra muestra-vigente"></span> Vigente</li>
-          </ul>
-          <ul id="grafico-inventario" class="grafico-inv"></ul>
-        </div>
-        <aside class="vineta vineta-obsoleto">
-          <p class="obsoleto-cifra"><span>63</span> %</p>
-          <p class="obsoleto-texto">de los activos inventariados tiene <strong>más de 4 años</strong>: una ola de RAEE a punto de llegar.</p>
-          <p class="pie" id="obsoleto-nota"></p>
-        </aside>
-      </div>
-      <h3 class="subtitulo">Materiales críticos</h3>
-      <ul id="materiales" class="materiales"></ul>
-    </section>
-
-    <!-- 6. RAEE -->
-    <section id="raee" class="pagina" aria-labelledby="titulo-raee">
-      <header class="pagina-cabecera">
-        <p class="capitulo">Capítulo 05</p>
-        <h2 id="titulo-raee">RAEE: ¿cumple la norma?</h2>
-        <p class="pie">RAEE = residuos de aparatos eléctricos y electrónicos. Contienen plomo, cadmio, mercurio y arsénico, que contaminan suelo y agua por décadas.</p>
-      </header>
-      <div class="vinetas vinetas-raee">
-        <div class="vineta vineta-crash">
-          <p class="onomato onomato-crash" aria-hidden="true">¡CRASH!</p>
-          <p class="sello" id="veredicto">Cumple parcialmente</p>
-          <p>Como <strong>gran consumidor</strong> de equipos (no fabricante ni importador), su obligación principal es entregar los RAEE a gestores autorizados y <strong>conservar los certificados de disposición final</strong>. Esos certificados no aparecen en ninguna fuente pública.</p>
-          <p id="raee-resumen" class="raee-resumen"></p>
-        </div>
-        <div class="vineta">
-          <ul id="checklist" class="checklist"></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7. ESCENARIOS -->
-    <section id="escenarios" class="pagina" aria-labelledby="titulo-esc">
-      <header class="pagina-cabecera">
-        <p class="capitulo">Capítulo 06</p>
-        <h2 id="titulo-esc">Simulador de escenarios</h2>
-        <p class="pie">Activa las acciones del plan y mira cuánto CO₂ se evita frente a la meta del objetivo 1 (−15 %).</p>
-      </header>
-      <div class="vinetas vinetas-esc">
-        <fieldset class="vineta acciones">
-          <legend>Acciones del plan</legend>
-          <div id="lista-acciones"></div>
-        </fieldset>
-        <aside class="vineta vineta-resultado" aria-live="polite">
-          <h3>Resultado</h3>
-          <p class="resultado-cifra" id="esc-reduccion">0 kg</p>
-          <p class="pie">CO₂ evitado al año</p>
-          <div class="meta-barra" role="img" id="meta-barra" aria-label="Progreso hacia la meta">
-            <span class="meta-relleno" id="meta-relleno"></span>
-            <span class="meta-marca" id="meta-marca"></span>
-          </div>
-          <p id="esc-meta" class="esc-meta"></p>
-          <dl class="datos">
-            <div><dt>Huella resultante</dt><dd id="esc-co2">—</dd></div>
-            <div><dt>Payback más largo</dt><dd id="esc-payback">—</dd></div>
-            <div><dt>Inversión total</dt><dd id="esc-inversion">—</dd></div>
-          </dl>
-          <details class="payback-propio">
-            <summary>Calcula el payback con tus propios supuestos</summary>
-            <div class="payback-campos">
-              <label>Inversión (USD)<input id="pb-inversion" type="number" min="0" step="1000" inputmode="numeric"></label>
-              <label>Ahorro anual (USD/año)<input id="pb-ahorro" type="number" min="0" step="500" inputmode="numeric"></label>
-            </div>
-            <p id="pb-resultado" aria-live="polite">Payback simple = inversión ÷ ahorro anual.</p>
-          </details>
-        </aside>
-      </div>
-    </section>
-
-    <!-- 8. KPI -->
-    <section id="kpi" class="pagina" aria-labelledby="titulo-kpi">
-      <header class="pagina-cabecera">
-        <p class="capitulo">Capítulo 07</p>
-        <h2 id="titulo-kpi">Tablero de KPI</h2>
-        <p class="pie">Seis indicadores para verificar el plan (fase V del PHVA): de la línea base 2026 a la meta.</p>
-      </header>
-      <h3 class="subtitulo">Objetivos SMART</h3>
-      <ol id="objetivos" class="objetivos"></ol>
-      <h3 class="subtitulo">Indicadores</h3>
-      <ul id="tablero-kpi" class="tablero"></ul>
-      <div class="ods" aria-label="Objetivos de Desarrollo Sostenible">
-        <p class="ods-titulo">Alineado con los ODS</p>
-        <ul id="ods" class="ods-lista"></ul>
+      <div class="anadir" role="group" aria-labelledby="anadir-titulo">
+        <h3 id="anadir-titulo">Añadir</h3>
+        <div class="chips" id="chips"></div>
       </div>
 
-      <aside class="vineta erratas" aria-labelledby="titulo-erratas">
-        <h3 id="titulo-erratas">Fe de erratas del caso</h3>
-        <p>El documento fuente tiene algunas contradicciones internas. Aquí se dicen tal cual y se explica qué valor usa el sitio:</p>
-        <ul id="lista-erratas"></ul>
-      </aside>
-    </section>
-
-    <!-- 9. CRÉDITOS -->
-    <section id="creditos" class="pagina creditos" aria-labelledby="titulo-creditos">
-      <header class="pagina-cabecera">
-        <p class="capitulo">Capítulo 08</p>
-        <h2 id="titulo-creditos">Créditos</h2>
-      </header>
-      <div class="vinetas vinetas-2">
-        <div class="vineta">
-          <p class="creditos-texto">Trabajo académico en equipo — Ingeniería de Sistemas. Desarrollo web: Mario Puerta. Coautoría del diagnóstico: <a href="https://www.linkedin.com/in/davidalexanderrinconcorredorkuronoma/" target="_blank" rel="noopener">David Alexander Rincón Corredor (Kuronoma)</a> y equipo.</p>
-          <p class="pie">La organización analizada se presenta de forma anónima como <em>un proveedor regional de servicios gestionados y data centers (caso de estudio)</em>.</p>
-        </div>
-        <div class="vineta vineta-trama">
-          <h3>Nota metodológica</h3>
-          <p>El equipo trabajó solo con información pública, normativa vigente y especificaciones de fabricantes. Consumo, PUE y volumen de RAEE son <strong>estimaciones técnicas</strong>, escenarios representativos y no cifras auditadas.</p>
-          <p class="pie">Código bajo licencia MIT. Sin seguimiento ni cookies.</p>
-        </div>
+      <div class="herramientas">
+        <button class="boton boton-cian" id="medir" type="button">Medir este equipo</button>
+        <button class="boton" id="ejemplo" type="button">Cargar ejemplo</button>
+        <button class="boton boton-plano" id="vaciar" type="button">Vaciar</button>
       </div>
+      <p class="medicion" id="medicion" role="status"></p>
     </section>
   </main>
 
+  <a class="mini-hud" id="mini-hud" href="#hud" aria-label="Ver el resultado completo">
+    <span class="mini-nv">NV <b id="mini-n">3</b></span>
+    <span class="mini-cifra"><b id="mini-co2">0</b> kg CO₂/año</span>
+    <span class="mini-ver" aria-hidden="true">Ver ↓</span>
+  </a>
+
   <footer class="pie-pagina">
-    <p><span lang="ja" class="kanji-pie" aria-hidden="true">環境</span> Huella TIC · 2026 · Mario Alejandro Puerta Alarcón</p>
-    <a href="#inicio">Volver arriba</a>
+    <p>Hecho por Mario Puerta × <a href="https://www.linkedin.com/in/davidalexanderrinconcorredorkuronoma/" target="_blank" rel="noopener">David Rincón «Kuronoma»</a></p>
+    <p><a href="https://github.com/ale0009" target="_blank" rel="noopener">github.com/ale0009</a> · <a href="#">Portafolio</a> · <a href="proceso/">Cómo se hizo</a></p>
+    <p class="pie-legal">CO₂ (kg/año) = kW × h/día × 365 × unidades × 0,196 (IDEAM, 2023). Estimación de uso eléctrico; no incluye fabricación ni transporte. MIT · sin cookies.</p>
   </footer>
 </body>
 </html>

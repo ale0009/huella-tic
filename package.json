@@ -1,7 +1,7 @@
 {
   "name": "huella-tic",
   "version": "1.0.0",
-  "description": "Landing interactiva: diagnóstico ISO 14001:2015 de la huella TIC de un data center (caso de estudio).",
+  "description": "¿Cuánto CO₂ emite tu tecnología? Calculadora con el factor IDEAM 0,196 y el diagnóstico ISO 14001 del que sale (/proceso/).",
   "type": "module",
   "private": true,
   "scripts": {

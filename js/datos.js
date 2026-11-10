@@ -162,3 +162,6 @@ export const PHVA = [
   { letra: 'V', nombre: 'Verificar', clausulas: 'Cláusula 9', resumen: 'Evaluación del desempeño', hizo: ['Seis indicadores con fórmula, frecuencia, línea base y meta.', 'Seguimiento trimestral de kWh × factor IDEAM.', 'Al menos una auditoría interna documentada.', 'Evaluación de cumplimiento legal RAEE.'] },
   { letra: 'A', nombre: 'Actuar', clausulas: 'Cláusula 10', resumen: 'Mejora', hizo: ['Tratar los hallazgos críticos como no conformidades.', 'Revisar cada año los impactos de nivel bajo.', 'Extender la gestión de energía (ISO 50001) al país.', 'Mejora continua hacia la certificación 2029–2030.'] },
 ];
+
+/** §1.3.3 — "Cada unidad de enfriamiento Liebert CRU consume el equivalente a lo que gastan 15 hogares colombianos en un año". */
+export const HOGARES_POR_CRU = 15;

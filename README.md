@@ -1,77 +1,74 @@
-# Huella TIC — ISO 14001 en un data center
+# Huella TIC — ¿Cuánto CO₂ emite tu tecnología?
 
 [English version](README.en.md) · ![CI](https://github.com/ale0009/huella-tic/actions/workflows/ci.yml/badge.svg)
 
-Landing interactiva de una sola página que convierte un **diagnóstico ambiental ISO 14001:2015** en algo que se puede manipular: cuánto CO₂ emite la infraestructura TIC de *un proveedor regional de servicios gestionados y data centers (caso de estudio)*, qué impactos son críticos, si cumple la normativa de residuos electrónicos y qué acciones bajarían la huella.
+Una calculadora que hace **una sola cosa**: dices qué equipos tienes (servidores, PC, laptops, monitores, routers, UPS…), cuántos y cuántas horas al día están encendidos, y ves en vivo los **kg de CO₂ al año** con el factor de la red eléctrica de Colombia (**IDEAM 2023: 0,196 kg CO₂/kWh**).
 
-> **≈ 490 t de CO₂ al año** en 6 data centers. El 42 % lo pone el enfriamiento.
+El proyecto tiene dos caras:
 
-Estética de manga en blanco y negro: papel, tinta, un acento rojo, tramas de puntos dibujadas en SVG, viñetas, líneas cinéticas y onomatopeyas hechas con CSS. No usa personajes, logos ni arte con derechos de autor.
+| Ruta | Qué es |
+|---|---|
+| `/` | **La herramienta.** Abre con un ejemplo marcado (una pequeña oficina, ≈ 1 861 kg CO₂/año). Medidor tipo HUD de videojuego con niveles, equivalencias y botón «Compartir resultado» que copia un texto. |
+| `/proceso/` | **Cómo se hizo.** El diagnóstico ISO 14001:2015 del que sale todo: método, gráfica de CO₂ por equipo, decisiones y muestras de diseño, PHVA, matriz de aspectos e impactos, RAEE, simulador de escenarios, KPI, fe de erratas, fuentes y limitaciones. |
 
-## Qué incluye
+## Cómo usarlo
 
-| # | Sección | Qué hace |
-|---|---|---|
-| 1 | Splash | El dato principal (≈ 490 t CO₂/año) en página completa. |
-| 2 | Por qué ISO 14001 + PHVA | Cuatro viñetas navegables con teclado (P: cláusulas 4–6, H: 7–8, V: 9, A: 10), cada una con lo que hizo el diagnóstico. |
-| 3 | Calculadora de huella | Tabla de 10 equipos con controles (unidades, horas/día, kW) y factor de emisión editable. Recalcula kWh y kg CO₂ en vivo; barra de distribución por categoría; regla de PUE. |
-| 4 | Matriz de aspectos e impactos | Mapa de calor P × S con el semáforo de la fuente; al hacer clic muestra causa, efecto y acción requerida. |
-| 5 | Inventario y obsolescencia | Gráfico de unidades por tipo, % obsoleto y materiales críticos. |
-| 6 | RAEE | Checklist de cumplimiento (Ley 1672 de 2013, resoluciones 851/2022, 1297/2010, 1512/2010, Protocolo de Montreal). Veredicto: *cumple parcialmente*. |
-| 7 | Simulador de escenarios | Activa acciones (free cooling, virtualización, apagado automático, solar…) y mira la reducción de CO₂ frente a la meta, la huella resultante y el payback. |
-| 8 | Tablero de KPI | 3 objetivos SMART, 6 indicadores (línea base → meta) y ODS 7, 12 y 13. Incluye la **fe de erratas del caso**. |
-| 9 | Créditos | Autoría y nota metodológica. |
+1. Abre `/`: ya hay un ejemplo cargado.
+2. Cambia cantidad (− / +), horas al día (deslizador) o vatios. Añade equipos con los botones «+ Servidor rack», «+ Laptop»…
+3. «Medir este equipo» añade el equipo desde el que navegas. **Es una estimación**: el navegador no mide vatios; con la batería (si la expone) y los hilos de CPU solo se adivina si es laptop o PC, y se usan los vatios de la fuente para ese tipo.
+4. «Compartir resultado» copia un texto con tu cifra, tu nivel y el enlace.
 
-## Cómo verlo
+## De dónde salen las cifras
 
-No necesita instalación ni compilación: es HTML, CSS y módulos de JavaScript.
+- **Fórmula y factor:** `CO₂ (kg/año) = kW × h/día × 365 × unidades × 0,196` (diagnóstico §1.3; IDEAM, 2023).
+- **Potencias y horas por defecto:** tabla §1.3.2 del diagnóstico (p. ej. servidor rack 500 W, PC 85 W, laptop 45 W, 24 h o 9 h al día). El **monitor** no está en la tabla: su potencia queda vacía y la escribe el usuario.
+- **Equivalencias (calculado aquí)** con proporciones de la propia fuente: 490 014 kg ≈ 106 carros → ≈ 4 623 kg por carro al año; 1 aire de precisión de 5 kW ≈ 15 hogares → 2 920 kWh por hogar al año. **No** hay árboles ni kilómetros: la fuente no trae esos datos.
+- **Niveles del HUD:** escala propia del juego (cada nivel es 10 veces más CO₂), no de la norma.
+- Solo se cuenta la electricidad de uso; no fabricación, transporte ni fin de vida.
 
-```bash
-python3 -m http.server 8000
-# abre http://localhost:8000
-```
+## De qué trabajo sale
 
-(Los módulos ES no cargan desde `file://`, por eso hace falta un servidor estático.)
+Diagnóstico ambiental ISO 14001:2015 de la infraestructura TIC de *un proveedor regional de servicios gestionados y data centers (caso de estudio, anonimizado)*, hecho en equipo en Ingeniería de Sistemas (2026). Las cifras son estimaciones técnicas con información pública, no datos auditados. Las contradicciones de la fuente están en la fe de erratas de `/proceso/`.
 
-**GitHub Pages:** *Settings → Pages → Deploy from a branch → `main` / raíz*.
+## Ejecutar y probar
 
-## Pruebas
+Sin instalación ni compilación (HTML, CSS y módulos JS):
 
 ```bash
-node --test        # Node 20 o superior
+python3 -m http.server 8000   # abre http://localhost:8000
+node --test                   # Node 20 o superior
 ```
 
-Las pruebas (`tests/calculos.test.js`) comprueban, entre otras cosas, que el total recalculado reproduzca el total de la fuente (490 014 kg CO₂/año) con un margen del 0,1 %, que el reparto por categoría dé 42 % enfriamiento y 38 % servidores, y la lógica del semáforo y del simulador. La CI de GitHub Actions las ejecuta en cada *push*.
+- `tests/calculos.test.js` (18 pruebas): el inventario reproduce el total de la fuente (490 014 kg), reparto por categoría, semáforo, escenarios.
+- `tests/calculadora.test.js` (12 pruebas): potencias del catálogo = tabla de la fuente, monitor sin dato, ejemplo de oficina, límites de entrada, equivalencias, niveles, medidor, «medir este equipo» y texto para compartir.
+
+GitHub Pages: *Settings → Pages → `main` / raíz*.
 
 ## Estructura
 
 ```
-index.html            página única
-css/estilos.css       estilos (tokens de color, viñetas, trama, onomatopeyas)
-js/datos.js           datos del caso, con la sección de la fuente en comentarios
-js/calculos.js        funciones puras: huella, distribución, significancia, escenarios, payback
-js/app.js             interfaz (pinta las secciones y conecta los controles)
-tests/                pruebas con node:test
-assets/favicon.svg    icono (kanji 環 «medio ambiente»)
+index.html              la herramienta
+proceso/index.html      cómo se hizo (diagnóstico completo)
+css/herramienta.css     estilos de la herramienta (claro «Tinta y trama», oscuro «Jisseki»)
+css/estilos.css         estilos de /proceso/
+js/datos.js             datos del caso, con la sección de la fuente
+js/calculos.js          funciones puras del diagnóstico
+js/calculadora.js       funciones puras de la herramienta
+js/herramienta.js       interfaz de la herramienta
+js/app.js               interfaz de /proceso/
+tests/                  pruebas con node:test
 ```
-
-## Metodología y cifras
-
-- Fórmula: `CO₂ (kg/año) = kW × horas/día × 365 × unidades × 0,196`, con el factor de emisión del IDEAM (2023).
-- Todas las cifras salen del documento del diagnóstico. Son **estimaciones técnicas** hechas con información pública y especificaciones de fabricantes, no datos auditados.
-- Los montos de inversión vienen anonimizados en la versión pública del caso; el simulador no los inventa.
-- Cuando la fuente se contradice (meta de CO₂ −15 % frente a −20 %, plazos RAEE y SGA, 63 % de obsolescencia, nivel de la fila de enfriamiento en la matriz), el sitio usa la sección de **objetivos** y lo explica en la fe de erratas.
 
 ## Accesibilidad
 
-Contraste AA, navegación completa por teclado (pestañas PHVA con flechas, enlace para saltar al contenido, foco visible), etiquetas en todos los controles, regiones `aria-live` para los resultados, respeto a `prefers-reduced-motion` y diseño adaptable sin scroll horizontal en móvil.
+Contraste AA en claro y oscuro, uso completo con teclado, etiquetas en todos los controles, resultados en regiones `aria-live`, `prefers-reduced-motion` y diseño de 390 a 1440 px sin scroll horizontal.
 
 ## Créditos
 
-Trabajo académico en equipo — Ingeniería de Sistemas. Desarrollo web: Mario Puerta. Coautoría del diagnóstico: [**David Alexander Rincón Corredor (Kuronoma)**](https://www.linkedin.com/in/davidalexanderrinconcorredorkuronoma/) y equipo.
+Mario Puerta × [David Rincón «Kuronoma»](https://www.linkedin.com/in/davidalexanderrinconcorredorkuronoma/) · [github.com/ale0009](https://github.com/ale0009). Diagnóstico hecho en equipo.
 
-Tipografías de Google Fonts (licencia OFL): Dela Gothic One, Bangers, Noto Serif JP e Inter.
+Tipografías de Google Fonts (OFL): Dela Gothic One, Bangers, IBM Plex Sans, IBM Plex Mono y Noto Serif JP.
 
 ## Licencia
 
-[MIT](LICENSE) © 2026 Mario Alejandro Puerta Alarcón
+[MIT](LICENSE) © 2026 Mario Alejandro Puerta Alarcón y David Alexander Rincón Corredor
