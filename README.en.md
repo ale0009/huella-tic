@@ -44,7 +44,7 @@ node --test   # Node 20+
 
 ## Credits
 
-Academic team project — Systems Engineering. Web development: Mario Puerta. Assessment co-authorship: David Alexander Rincón Corredor (Kuronoma) and team.
+Academic team project — Systems Engineering. Web development: Mario Puerta. Assessment co-authorship: [**David Alexander Rincón Corredor (Kuronoma)**](https://www.linkedin.com/in/davidalexanderrinconcorredorkuronoma/) and team.
 
 ## License
 

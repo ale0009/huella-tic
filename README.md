@@ -68,7 +68,7 @@ Contraste AA, navegación completa por teclado (pestañas PHVA con flechas, enla
 
 ## Créditos
 
-Trabajo académico en equipo — Ingeniería de Sistemas. Desarrollo web: Mario Puerta. Coautoría del diagnóstico: David Alexander Rincón Corredor (Kuronoma) y equipo.
+Trabajo académico en equipo — Ingeniería de Sistemas. Desarrollo web: Mario Puerta. Coautoría del diagnóstico: [**David Alexander Rincón Corredor (Kuronoma)**](https://www.linkedin.com/in/davidalexanderrinconcorredorkuronoma/) y equipo.
 
 Tipografías de Google Fonts (licencia OFL): Dela Gothic One, Bangers, Noto Serif JP e Inter.
 
