@@ -1,0 +1,13 @@
+{
+  "name": "huella-tic",
+  "version": "1.0.0",
+  "description": "Landing interactiva: diagnóstico ISO 14001:2015 de la huella TIC de un data center (caso de estudio).",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test",
+    "start": "python3 -m http.server 8000"
+  },
+  "author": "Mario Alejandro Puerta Alarcón",
+  "license": "MIT"
+}

@@ -1,0 +1,15 @@
+# Texto fuente del diagnóstico: no se publica
+fuente/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Dependencias (el proyecto no las necesita)
+node_modules/
+
+# Notas de traspaso entre sesiones (locales)
+HANDOFF.md
