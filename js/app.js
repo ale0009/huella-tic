@@ -3,11 +3,11 @@
 import {
   EQUIPOS, FACTOR_EMISION, TOTAL_FUENTE_KG, VEHICULOS_EQUIVALENTES, CATEGORIAS, MATERIALES, ESCALA, ASPECTOS,
   RAEE_CHECKLIST, RAEE_VEREDICTO, OBJETIVOS, META_REDUCCION_CO2, AHORRO_APAGADO, ACCIONES, KPIS, ODS, PHVA,
-  OBSOLESCENCIA_FUENTE, BENEFICIO_CONSOLIDADO,
+  OBSOLESCENCIA_FUENTE,
 } from './datos.js';
 import {
   huellaTotal, distribucionPorCategoria, significancia, nivelSignificancia, porcentajeObsoleto,
-  reduccionAccion, simularEscenario, paybackSimple, kwhAnual, formatoNumero as fmt,
+  reduccionAccion, simularEscenario, paybackSimple, formatoNumero as fmt,
 } from './calculos.js';
 
 const $ = (sel, raiz = document) => raiz.querySelector(sel);
@@ -333,19 +333,16 @@ function iniciarKpi() {
     </li>`).join('');
   $('#ods').innerHTML = ODS.map((o) => `<li><b>ODS ${o.n}</b>${o.nombre}</li>`).join('');
 
-  const { totalCo2 } = huellaTotal(EQUIPOS, FACTOR_EMISION);
-  const ws = EQUIPOS.find((e) => e.id === 'ws');
   const total = EQUIPOS.reduce((s, e) => s + e.unidades, 0);
   const obs = EQUIPOS.filter((e) => e.obsoleto).reduce((s, e) => s + e.unidades, 0);
+  // Cada punto: qué decía la fuente, qué es lo correcto y qué usa el sitio.
   const erratas = [
-    '<strong>Meta de CO₂:</strong> el objetivo 1 pide −15 % (≤ 416 512 kg) y la tabla de indicadores −20 % (≤ 392 011 kg). Se usa el −15 % del objetivo, que es el compromiso formal.',
-    '<strong>Plazo RAEE 100 %:</strong> el objetivo 2 dice antes de diciembre de 2027 (18 meses) y la tabla de indicadores, diciembre de 2026. Se usa diciembre de 2027.',
-    '<strong>Plazo del SGA:</strong> el objetivo 3 fija el primer semestre de 2028 y la tabla de indicadores, diciembre de 2027. Se usa el plazo del objetivo.',
-    `<strong>Obsolescencia:</strong> la fuente reporta 63 %, pero su propia tabla da ${obs} de ${total} unidades (${fmt((obs / total) * 100)} %) o 6 de 10 tipos (60 %). Además marca como obsoletos los routers con exactamente 4 años, aunque el criterio es «más de 4». Se muestra el 63 % como dato reportado.`,
-    '<strong>Enfriamiento en la matriz:</strong> Media (2) × Grave (3) = 6 es MEDIO según la escala de la fuente, pero aparece como «ALTO 6 — CRÍTICO». El mapa usa la escala. La misma fila habla de destrucción de la capa de ozono, mientras el glosario aclara que los HFC no la dañan (su problema es el alto GWP).',
-    `<strong>Redondeo:</strong> las workstations figuran con ${fmt(42008)} kWh/año; la fórmula da ${fmt(kwhAnual(ws))} (0,085 kW × 9 h × 365 × 150). Por eso el total recalculado es ${fmt(totalCo2)} kg frente a ${fmt(TOTAL_FUENTE_KG)} kg (diferencia < 0,01 %).`,
-    `<strong>Equivalencia en carros:</strong> §1.3.3 dice que 490 014 kg ≈ 106 carros (≈ ${fmt(TOTAL_FUENTE_KG / VEHICULOS_EQUIVALENTES)} kg por carro al año) y §5 que ${fmt(BENEFICIO_CONSOLIDADO.kg)} kg ≈ ${BENEFICIO_CONSOLIDADO.vehiculos} carros (≈ ${fmt(BENEFICIO_CONSOLIDADO.kg / BENEFICIO_CONSOLIDADO.vehiculos)} kg). La diferencia es de ~1 %; la calculadora usa la proporción de §1.3.3, que es la de la línea base.`,
-    '<strong>Inversiones:</strong> los montos en USD de la tabla de costos vienen anonimizados en la versión pública del caso; el simulador muestra reducción de CO₂ y payback, pero no inventa la inversión total.',
+    '<strong>Meta de CO₂.</strong> <b>El caso decía</b> dos metas: el objetivo 1 pide reducir un 15 % (≤ 416 512 kg al año) y la tabla de indicadores, un 20 % (≤ 392 011 kg). <b>Lo correcto:</b> una sola meta; la que manda es la del objetivo, que es el compromiso formal. <b>El sitio usa</b> el −15 %.',
+    '<strong>Plazo de los RAEE al 100 %.</strong> <b>El caso decía</b> que todos los residuos electrónicos (RAEE) tendrán certificado de disposición antes de diciembre de 2027 (objetivo 2, a 18 meses), y la tabla de indicadores, que antes de diciembre de 2026. <b>Lo correcto:</b> un solo plazo, el del objetivo. <b>El sitio usa</b> diciembre de 2027.',
+    '<strong>Plazo del sistema de gestión ambiental (SGA).</strong> <b>El caso decía</b> en el objetivo 3 que los fundamentos de ISO 14001 estarán en el primer semestre de 2028, y en la tabla de indicadores, que en diciembre de 2027. <b>Lo correcto:</b> un solo plazo, el del objetivo. <b>El sitio usa</b> el primer semestre de 2028.',
+    `<strong>Obsolescencia.</strong> <b>El caso decía</b> que el 63 % de los equipos son obsoletos, y marcaba como obsoletos los routers de exactamente 4 años. <b>Lo correcto:</b> su propia tabla da ${obs} de ${total} unidades (${fmt((obs / total) * 100)} %) o 6 de 10 tipos (60 %), y con su criterio («más de 4 años») un equipo de 4 años todavía no es obsoleto. <b>El sitio usa</b> el 63 % solo como dato reportado por la fuente, y muestra al lado el cálculo con la tabla.`,
+    '<strong>Enfriamiento en la matriz de aspectos.</strong> <b>El caso decía</b> que el enfriamiento es «ALTO 6 — CRÍTICO» y que sus gases (HFC) destruyen la capa de ozono. <b>Lo correcto:</b> con su propia escala, probabilidad Media (2) × gravedad Grave (3) = 6 es nivel MEDIO; y su glosario aclara que los HFC no dañan la capa de ozono: su problema es que calientan mucho el planeta (alto GWP). <b>El sitio usa</b> la escala: MEDIO.',
+    '<strong>Inversiones.</strong> Los montos en USD de la tabla de costos vienen anonimizados en la versión pública del caso; el simulador muestra reducción de CO₂ y payback, pero no inventa la inversión total.',
   ];
   $('#lista-erratas').innerHTML = erratas.map((e) => `<li>${e}</li>`).join('');
 }
